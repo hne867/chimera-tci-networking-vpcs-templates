@@ -1,56 +1,44 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Networking VPC Config",
+  "title": "Networking VPC Repo Config",
   "type": "object",
-  "required": ["deployment", "vrfDetails"],
+  "required": ["routing", "vrf"],
+  "additionalProperties": false,
   "properties": {
-    "deployment": {
+    "routing": {
       "type": "object",
-      "required": ["org", "environment", "name"],
+      "required": ["ipam"],
+      "additionalProperties": false,
       "properties": {
-        "org": { "type": "string" },
-        "environment": { "type": "string" },
-        "name": { "type": "string" },
-        "id": { "type": "string" }
-      }
-    },
-    "vrfDetails": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["vrfName", "region", "ipam"],
-        "properties": {
-          "vrfName": { "type": "string" },
-          "region": { "type": "string" },
-          "routingRef": { "type": "string" },
-          "ipam": {
-            "type": "object",
-            "required": ["primaryCidr"],
-            "properties": {
-              "primaryCidr": { "type": "string" },
-              "additionalCidrs": {
-                "type": "array",
-                "items": { "type": "string" }
-              }
-            }
-          },
-          "transitGateway": {
-            "type": "object",
-            "properties": {
-              "id": { "type": "string" }
-            }
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "key": { "type": "string" },
-                "value": { "type": "string" }
-              }
+        "ipam": {
+          "type": "object",
+          "required": ["primary_cidr"],
+          "additionalProperties": false,
+          "properties": {
+            "primary_cidr": { "type": "string" },
+            "additional_cidrs": {
+              "type": "array",
+              "items": { "type": "string" }
             }
           }
+        },
+        "transit_gateway": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": { "type": "string" }
+          }
         }
+      },
+      "required": ["ipam", "transit_gateway"]
+    },
+    "vrf": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "isolated": { "type": "boolean" }
       }
     }
   }
